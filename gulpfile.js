@@ -14,7 +14,7 @@ var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 var mkdirp = require('mkdirp');
 
-
+var replace_install = "/army";
 
 var option = {
     buildPath: "../www/army"
@@ -51,7 +51,14 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/resource/"));
     gulp.src("./image/**/*")
         .pipe(gulp.dest(option.buildPath+"/image/"));
+    gulp.src("./svg/**/*")
+        .pipe(gulp.dest(option.buildPath+"/svg/"));
+    gulp.src("./img/*")
+        .pipe(gulp.dest(option.buildPath+"/img/"));
+    gulp.src("./jump.php")
+        .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./request.php")
+        .pipe(replace(/_INSTALL_PATH_/,replace_install))
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./*.ico")
         .pipe(gulp.dest(option.buildPath+"/"));
@@ -70,7 +77,7 @@ gulp.task('scripts', function() {
         .pipe(concat('main.js'))
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('main.js'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/left.js')
         .pipe(concat('left.js'))
@@ -84,7 +91,38 @@ gulp.task('scripts', function() {
         .pipe(rename('right.js'))
         .pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/app.js')
+        //.pipe(replace(/_ADMINTOOL_PATH_/,replace_content_admintools_url))
+        .pipe(concat('app.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('app.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/hcu_util.js')
+        .pipe(concat('hcu_util.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('hcu_util.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/login.js')
+        .pipe(concat('login.js'))
+        // .pipe(gulp.dest('./dist/js'))
+        .pipe(rename('login.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/nprogress.js')
+        .pipe(concat('nprogress.js'))
+        // .pipe(gulp.dest('./dist/js'))
+        .pipe(rename('nprogress.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
 
+
+    gulp.src('./css/Login.css')
+        // .pipe(concat('Login.css'))
+        .pipe(rename('Login.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./css/nprogress.css')
         // .pipe(concat('nprogress.css'))
         .pipe(rename('nprogress.css'))
@@ -100,7 +138,16 @@ gulp.task('scripts', function() {
         .pipe(rename('style.css'))
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
-
+    gulp.src('./css/Reset.css')
+        // .pipe(concat('scope.css'))
+        .pipe(rename('Reset.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
+    gulp.src('./css/Reset2.css')
+        // .pipe(concat('scope.css'))
+        .pipe(rename('Reset2.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./main.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
@@ -108,6 +155,16 @@ gulp.task('scripts', function() {
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./right.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./Login.html')
+        .pipe(rename('login.html'))
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./LostPassword.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
 
