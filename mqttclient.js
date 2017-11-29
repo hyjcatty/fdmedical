@@ -20,17 +20,17 @@ client.on('connect', function () {
     setInterval(function(){
         if(!start) return;
         client.publish('MQTT_XH_ARMY_UI_Main', buildsoldierinfo());
-    },15000);
+    },45000);
 
     setInterval(function(){
         if(!start) return;
         client.publish('MQTT_XH_ARMY_UI_Main', buildhospitalinfo());
-    },15000);
+    },45000);
 
     setInterval(function(){
         if(!start) return;
         client.publish('MQTT_XH_ARMY_UI_Main', buildambulanceinfo());
-    },15000);
+    },45000);
     //client.publish('MQTT_TOPIC_UI_TO_HCU', 'Hello mqtt['+i+']');
 });
 
@@ -158,6 +158,7 @@ function buildsoldierinfo(){
     ];
     var soldierlist=[];
     for(var i=0;i<address.length;i++){
+    //for(var i=0;i<4;i++){
         for(var j=0;j<8;j++){
             var reportnumber = GetRandomNum(1,6);
             var report=[];
@@ -303,7 +304,7 @@ function buildhospitalinfo(){
     ];
     var hospitallist=[];
     for(var i=0;i<address.length;i++){
-    //for(var i=0;i<1;i++){
+    //for(var i=0;i<4;i++){
             var reportnumber = GetRandomNum(1,6);
             var report=[];
             for(var k=0;k<reportnumber;k++){
@@ -447,6 +448,7 @@ function buildambulanceinfo(){
 
     var ambulancelist=[];
     for(var i=0;i<address.length;i++){
+    //for(var i=0;i<4;i++){
         var reportnumber = GetRandomNum(1,6);
         var routernumber = GetRandomNum(2,4);
         var report=[];
@@ -497,45 +499,6 @@ function buildambulanceinfo(){
         body:ambulancelist
     }
     return JSON.stringify(ret);
-}
-function build_status_message(){
-    var list1 = [];
-    var list2 = [];
-    for(var i=0;i<31;i++){
-        var temp = {
-            process:1,
-            id:i,
-            status:true,
-            error:false,
-            package:false,
-            fillin:false,
-            volume:0,
-            reject:0
-        }
-        list1.push(temp);
-    }
-    for(var i=0;i<31;i++){
-        var temp = {
-
-            process:2,
-            id:i,
-            status:true,
-            error:false,
-            package:false,
-            fillin:false,
-            volume:0,
-            reject:0
-        }
-        list2.push(temp);
-    }
-    var message = {
-        action:"XH_Double_Line_Balance_config_status",
-        body:{
-            array1:list1,
-            array2:list2
-        }
-    };
-    return JSON.stringify(message);
 }
 function GetRandomNum(Min,Max)
 {

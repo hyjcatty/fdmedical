@@ -22,12 +22,17 @@ var ambulancewindowhandler =null;
 var soldiermarklist =[];
 var hospitalmarklist =[];
 var ambulancemarklist =[];
+var ambulanceroute1list=[];
+var ambulanceroute2list=[];
+var ambulanceroutelist=[];
+var ifseekingroute=false;
 var labellist =[];
 var sysinit = false;
 $(document).ready(function(){
     get_size();
     geoinfo = getLocation();
     document.documentElement.style.overflow='hidden';
+
 
 });
 window.onload=function(){
@@ -41,6 +46,7 @@ window.onload=function(){
         console.log("close button click");
         remove_label(hospital_label);
     });
+    var runcycle=setInterval(addroute,250);
 };
 
 function initialize(){
@@ -74,7 +80,7 @@ function initialize(){
     tileLayer.getTilesUrl = function(tileCoord, zoom) {
         var x = tileCoord.x;
         var y = tileCoord.y;
-        var url = 'http://127.0.0.1/army/image/black.png';     //根据当前坐标，选取合适的瓦片图
+        var url = './image/black.png';     //根据当前坐标，选取合适的瓦片图
         return url;
     };
     maphandler.addTileLayer(tileLayer);
@@ -121,14 +127,14 @@ function initialize_config(){
 function initialize_note(){
     var temp="";
     temp=temp+"<li><div><p class='maintext' style='font-size:24px;'><i class='fa fa-flag' ></i><span class='maintext'>图标说明</span></p></div>";
-    temp=temp+"<p class='maintext'><img src='./image/heath_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>士兵</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/wounded_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>伤员</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/treated_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>已治疗</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/injury_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>重伤</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/dead_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>死亡</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/ambulance_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>救护车</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/hospital.png' style='width:24px;hight:24px'></img><span class='maintext' style='margin-left: 17px'>医疗点</span></p>";
-    temp=temp+"<p class='maintext'><img src='./image/line_small.png' style='width:16px;hight:16px'></img><span class='maintext' style='margin-left: 25px'>救治路线</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/heath_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>士兵</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/wounded_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>伤员</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/treated_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>已治疗</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/injury_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>重伤</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/dead_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>死亡</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/ambulance_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>救护车</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/hospital.png' style='width:24px;hight:24px'/><span class='maintext' style='margin-left: 17px'>医疗点</span></p>";
+    temp=temp+"<p class='maintext'><img src='./image/line_small.png' style='width:16px;hight:16px'/><span class='maintext' style='margin-left: 25px'>救治路线</span></p>";
 
     temp=temp+"</li>";
     $("#MainNote").empty();
@@ -676,6 +682,18 @@ function removeambulancemarker(title){
         }
     }
 }
+function clearambulanceroute1(){
+    for(var i=0;i<ambulanceroute1list.length;i++){
+        maphandler.removeOverlay(ambulanceroute1list[i]);
+    }
+    ambulanceroute1list=[];
+}
+function clearambulanceroute2(){
+    for(var i=0;i<ambulanceroute2list.length;i++){
+        maphandler.removeOverlay(ambulanceroute2list[i]);
+    }
+    ambulanceroute2list=[];
+}
 function buildambulancelabel(){
     if(ambulanceselected===null) return null;
     var ambulance_label = search_label("Ambulance_"+ambulanceselected.id+"_"+ambulanceselected.Name);
@@ -738,6 +756,9 @@ function buildambulancelabel(){
     }
 }
 function addambulance(ambulance){
+    clearambulanceroute1();
+    clearambulanceroute2();
+    ambulanceroutelist=ambulancelist;
     // 创建图标对象
 
     ambulance_mark_click = function(){
@@ -767,6 +788,7 @@ function addambulance(ambulance){
 
         marker.addEventListener("click", ambulance_mark_click);
         //console.log(ambulancelist[i]);
+
         var linehandlerlist = [];
         for(var k=0;k<ambulancelist[i].router.length;k++) {
             linehandlerlist.push(new BMap.Point(parseFloat(ambulancelist[i].router[k].Longitude),parseFloat(ambulancelist[i].router[k].Latitude)));
@@ -778,8 +800,121 @@ function addambulance(ambulance){
             strokeWeight:3, //宽度
             strokeOpacity:1});//透明度
         //polyline.setZIndex(20);
-        maphandler.addOverlay(polyline);
+        //maphandler.addOverlay(polyline);
         ambulancemarklist.push({marker:marker,linehandlerlist:polyline});
+
+/*
+        var pointArr = [];
+        pointArr[0]=linehandlerlist[0];
+        pointArr[1]=t_point;
+        pointArr[2]=linehandlerlist[linehandlerlist.length-1];
+        var options = {
+            onSearchComplete: function(results){
+                var polyline=null;
+                if (driving1.getStatus() == BMAP_STATUS_SUCCESS){
+                    console.log("find route 1");
+                    var plan = results.getPlan(0);
+                    var pts = plan.getRoute(0).getPath();
+                    var lineCor = "#1aea0a";
+                    var lineSty = "solid";
+                    polyline = new BMap.Polyline(pts,{strokeColor:lineCor, strokeWeight:3, strokeOpacity:0.8,strokeStyle:lineSty});
+                    maphandler.addOverlay(polyline);
+                    ambulanceroute1list.push(polyline);
+                }else{
+                    console.log("can not find route 1");
+                }
+            }
+        };
+        var driving1 = new BMap.DrivingRoute(maphandler,options);
+        driving1.search(pointArr[0],pointArr[1]);
+        var options2 = {
+            onSearchComplete: function(results){
+                var polyline = null;
+                if (driving2.getStatus() == BMAP_STATUS_SUCCESS){
+
+                    console.log("find route 2");
+                    var plan = results.getPlan(0);
+                    var pts = plan.getRoute(0).getPath();
+                    var lineCor = "red";
+                    var lineSty = "dashed";
+                    polyline = new BMap.Polyline(pts,{strokeColor:lineCor, strokeWeight:3, strokeOpacity:0.8,strokeStyle:lineSty});
+                    maphandler.addOverlay(polyline);
+
+                    ambulanceroute1list.push(polyline);
+                }else{
+                    console.log("can not find route 2");
+                }
+            }
+        };
+        var driving2 = new BMap.DrivingRoute(maphandler,options2);
+        driving2.search(pointArr[1],pointArr[2]);*/
+
+
     }
 
 }
+function addroute(){
+    if(ambulanceroutelist.length==0){
+        return;
+    }
+    if(ifseekingroute) return;
+    ifseekingroute=true;
+    //ar localroute = ambulanceroutelist[0];
+
+    var localroute = ambulanceroutelist.shift();
+    var t_point = new BMap.Point(parseFloat(localroute.Longitude),parseFloat(localroute.Latitude));
+    var linehandlerlist = [];
+    for(var k=0;k<localroute.router.length;k++) {
+        linehandlerlist.push(new BMap.Point(parseFloat(localroute.router[k].Longitude),parseFloat(localroute.router[k].Latitude)));
+    }
+    var pointArr = [];
+    pointArr[0]=linehandlerlist[0];
+    pointArr[1]=t_point;
+    pointArr[2]=linehandlerlist[linehandlerlist.length-1];
+    var options = {
+        onSearchComplete: function(results){
+            var polyline=null;
+            if (driving1.getStatus() == BMAP_STATUS_SUCCESS){
+                console.log("find route 1");
+                var plan = results.getPlan(0);
+                var pts = plan.getRoute(0).getPath();
+                var lineCor = "#1aea0a";
+                var lineSty = "solid";
+                polyline = new BMap.Polyline(pts,{strokeColor:lineCor, strokeWeight:3, strokeOpacity:0.8,strokeStyle:lineSty});
+                maphandler.addOverlay(polyline);
+                ambulanceroute1list.push(polyline);
+            }else{
+                console.log("can not find route 1");
+            }
+            var options2 = {
+                onSearchComplete: function(results){
+                    var polyline = null;
+                    if (driving2.getStatus() == BMAP_STATUS_SUCCESS){
+
+                        console.log("find route 2");
+                        var plan = results.getPlan(0);
+                        var pts = plan.getRoute(0).getPath();
+                        var lineCor = "red";
+                        var lineSty = "dashed";
+                        polyline = new BMap.Polyline(pts,{strokeColor:lineCor, strokeWeight:3, strokeOpacity:0.8,strokeStyle:lineSty});
+                        maphandler.addOverlay(polyline);
+
+                        ambulanceroute2list.push(polyline);
+                    }else{
+                        console.log("can not find route 2");
+                    }
+                    ifseekingroute=false;
+                }
+            };
+            var driving2 = new BMap.DrivingRoute(maphandler,options2);
+            driving2.search(pointArr[1],pointArr[2]);
+        }
+    };
+    var driving1 = new BMap.DrivingRoute(maphandler,options);
+    driving1.search(pointArr[0],pointArr[1]);
+
+
+
+}
+
+
