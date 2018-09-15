@@ -53,7 +53,150 @@ function initialize(){
     $("#ArmyMap").css("width",winWidth);
     $("#ArmyMap").css("height",winHeight+120);
     //get_city(geoinfo.latitude,geoinfo.longitude);
-    maphandler = new BMap.Map("ArmyMap",{mapType:BMAP_SATELLITE_MAP});
+    maphandler = new BMap.Map("ArmyMap",{mapType:BMAP_NORMAL_MAP});
+    maphandler.setMapStyle({styleJson:[
+        {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": {
+                "color": "#021019"
+            }
+        },
+        {
+            "featureType": "highway",
+            "elementType": "geometry.fill",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "highway",
+            "elementType": "geometry.stroke",
+            "stylers": {
+                "color": "#147a92"
+            }
+        },
+        {
+            "featureType": "arterial",
+            "elementType": "geometry.fill",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "arterial",
+            "elementType": "geometry.stroke",
+            "stylers": {
+                "color": "#0b3d51"
+            }
+        },
+        {
+            "featureType": "local",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "land",
+            "elementType": "all",
+            "stylers": {
+                "color": "#08304b"
+            }
+        },
+        {
+            "featureType": "railway",
+            "elementType": "geometry.fill",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "railway",
+            "elementType": "geometry.stroke",
+            "stylers": {
+                "color": "#08304b"
+            }
+        },
+        {
+            "featureType": "subway",
+            "elementType": "geometry",
+            "stylers": {
+                "lightness": -70
+            }
+        },
+        {
+            "featureType": "building",
+            "elementType": "geometry.fill",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.text.fill",
+            "stylers": {
+                "color": "#857f7f"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.text.stroke",
+            "stylers": {
+                "color": "#000000"
+            }
+        },
+        {
+            "featureType": "building",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#022338"
+            }
+        },
+        {
+            "featureType": "green",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#062032"
+            }
+        },
+        {
+            "featureType": "boundary",
+            "elementType": "all",
+            "stylers": {
+                "color": "#1e1c1c"
+            }
+        },
+        {
+            "featureType": "manmade",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#022338"
+            }
+        },
+        {
+            "featureType": "poi",
+            "elementType": "all",
+            "stylers": {
+                "visibility": "off"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.icon",
+            "stylers": {
+                "visibility": "off"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.text.fill",
+            "stylers": {
+                "color": "#2da0c6",
+                "visibility": "on"
+            }
+        }
+    ]});
     //maphandler = new BMap.Map("ArmyMap");
     maphandler.centerAndZoom(new BMap.Point(geoinfo.Longitude,geoinfo.Latitude),15);
     //maphandler.addControl(new BMap.NavigationControl());
@@ -80,10 +223,10 @@ function initialize(){
     tileLayer.getTilesUrl = function(tileCoord, zoom) {
         var x = tileCoord.x;
         var y = tileCoord.y;
-        var url = './image/black.png';     //根据当前坐标，选取合适的瓦片图
+        var url = './image/bluelight.png';     //根据当前坐标，选取合适的瓦片图
         return url;
     };
-    maphandler.addTileLayer(tileLayer);
+    //maphandler.addTileLayer(tileLayer);
 }
 function initialize_statistic(){
     var temp="<div><p class='alarmtext' style='font-size:24px;'><span class='alarmtext'>战场统计</span></p>";

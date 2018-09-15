@@ -53,7 +53,9 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/image/"));
     gulp.src("./svg/**/*")
         .pipe(gulp.dest(option.buildPath+"/svg/"));
-    gulp.src("./img/*")
+    gulp.src("./fonts/**/*")
+        .pipe(gulp.dest(option.buildPath+"/fonts/"));
+    gulp.src("./img/**/*")
         .pipe(gulp.dest(option.buildPath+"/img/"));
     gulp.src("./jump.php")
         .pipe(gulp.dest(option.buildPath+"/"));
@@ -78,6 +80,18 @@ gulp.task('scripts', function() {
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('main.js'))
         .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/main2.js')
+        .pipe(concat('main2.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('main2.js'))
+        //.pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./js/main3.js')
+        .pipe(concat('main3.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('main3.js'))
+        //.pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/left.js')
         .pipe(concat('left.js'))
@@ -116,8 +130,17 @@ gulp.task('scripts', function() {
         .pipe(rename('nprogress.js'))
         .pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
-
-
+    gulp.src('./js/charts.js')
+        .pipe(concat('charts.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('charts.js'))
+        //.pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./css/index.css')
+    // .pipe(concat('Login.css'))
+        .pipe(rename('index.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./css/Login.css')
         // .pipe(concat('Login.css'))
         .pipe(rename('Login.css'))
@@ -151,6 +174,12 @@ gulp.task('scripts', function() {
     gulp.src('./main.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
+    gulp.src('./main2.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./main3.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
     gulp.src('./left.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
@@ -165,6 +194,9 @@ gulp.task('scripts', function() {
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./scope.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./index.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
 

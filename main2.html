@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>卫勤决策平台</title>
+    <!-- Bootstrap core CSS -->
+    <link href="./resource/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="./resource/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="./resource/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="./css/nprogress.css" rel="stylesheet">
+    <link href="./css/scope.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="./resource/js/bmqtt.js"></script>
+    <script src="./resource/js/jquery.min.js"></script>
+    <script src="./resource/js/bootstrap.min.js"></script>
+    <!-- Charts -->
+    <script src="./resource/js/charts/jquery.flot.js"></script> <!-- Flot Main -->
+    <script src="./resource/js/charts/jquery.flot.time.js"></script> <!-- Flot sub -->
+    <script src="./resource/js/charts/jquery.flot.animator.min.js"></script> <!-- Flot sub -->
+    <script src="./resource/js/charts/jquery.flot.resize.min.js"></script> <!-- Flot sub - for repaint when resizing the screen -->
+    <script src="./resource/js/charts/jquery.flot.orderBar.js"></script> <!-- Flot Bar chart -->
+    <script src="./resource/js/charts/jquery.flot.pie.min.js"></script> <!-- Flot Pie chart -->
+    <script src="./resource/js/sparkline.min.js"></script> <!-- Sparkline - Tiny charts -->
+    <script src="./resource/js/easypiechart.js"></script> <!-- EasyPieChart - Animated Pie Charts -->
+    <script src="./resource/js/Chart.bundle.min.js"></script> <!-- chart.js -->
+    <script src="./resource/js/Chart.min.js"></script> <!-- chart.js -->
+    <script src="js/charts.js"></script> <!-- All the above chart related functions -->
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2Pcn24FAWGTcyW4jsC8O38IyPd0pDZYX"></script>
+    <script src="./js/global.js"></script>
+    <script src="./js/main2.js"></script>
+</head>
+<body>
+    <header role="banner" id="fh5co-header">
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">卫勤决策平台</a>
+
+                </div>
+
+                <div class="pull-right" style="width:150px;height:36px;margin-top: 7px;float:right;">
+                    <iframe class="pull-right" width='150' scrolling="no" height="36" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=99&icon=1&num=3&site=12"></iframe>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+
+                <div class="block-area" id="tableHover">
+                    <h3 class="block-title">救治效率/效果统计</h3>
+                    <div class="table-responsive overflow">
+                        <table class="table table-bordered table-hover tile">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>组别</th>
+                                <th>空闲率</th>
+                                <th>治愈率</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>手术组 </td>
+                                <td>60% </td>
+                                <td>65%</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>重伤救治组</td>
+                                <td>10%</td>
+                                <td>72%</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>轻伤处置组</td>
+                                <td>0%</td>
+                                <td>100%</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="block-area" id="tableHover2">
+                    <h3 class="block-title">伤员管理信息</h3>
+                    <div class="tile">
+                        <h2 class="tile-title">伤情分布图</h2>
+                        <div class="tile-config dropdown">
+                            <a data-toggle="dropdown" href="" class="tooltips tile-menu" title="Options"></a>
+                            <ul class="dropdown-menu pull-right text-right">
+                                <li><a href="">Refresh</a></li>
+                                <li><a href="">Settings</a></li>
+                            </ul>
+                        </div>
+                        <div class="p-10">
+                            <div id="donut-chart" class="main-chart" style="height: 200px"></div>
+                        </div>
+                    </div>
+                    <div class="table-responsive overflow" style="height:140px;overflow: hidden">
+                        <table class="table table-bordered table-hover tile" >
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>姓名</th>
+                                <th>伤情</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody id="floattable">
+                            <tr>
+                                <td>1</td><td>张三</td><td>破片</td><td>死亡</td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>李四</td><td>枪伤</td><td>死亡</td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>王五</td><td>烧伤</td><td>治疗中</td>
+                            </tr>
+                            <tr>
+                                <td>4</td><td>二营长</td><td>心理</td><td>回复中</td>
+                            </tr>
+                            <tr>
+                                <td>1</td><td>王五</td><td>破片</td><td>轻伤</td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>赵六</td><td>枪伤</td><td>运回</td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>李向阳</td><td>枪伤</td><td>治疗中</td>
+                            </tr>
+                            <tr>
+                                <td>4</td><td>张富贵</td><td>心理</td><td>注射中</td>
+                            </tr>
+                            <tr>
+                                <td>1</td><td>黄长寿</td><td>破片</td><td>轻伤</td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>二狗子</td><td>破片</td><td>运回</td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>刘青山</td><td>破片</td><td>治疗中</td>
+                            </tr>
+                            <tr>
+                                <td>4</td><td>李聚奎</td><td>心理</td><td>注射中</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="block-area" style="margin-top: 25px">
+                    <h3 class="block-title">药品器材供给管理信息</h3>
+                    <canvas id='mychart' width='300' height='200'></canvas>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div id="MainStatistic" style="position:absolute;top:15px;left:25px;background: rgba(0,0,0,0.2);z-index:1;border:1px solid #99ffff"></div>
+                    <div id="ArmyMap" class="baidu-maps" style="width:100%;height:768px;overflow-x:hidden;overflow-y:hidden;z-index:0;margin-bottom: 25px">
+
+                    </div>
+                    <div id="MainNote" style="position:absolute;top:15px;right:25px;background: rgba(0,0,0,0.2);z-index:4;"></div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="tile">
+                        <h2 class="tile-title">监控救护所伤员流</h2>
+                        <div class="tile-config dropdown">
+                            <a data-toggle="dropdown" href="" class="tooltips tile-menu" title="Options"></a>
+                            <ul class="dropdown-menu pull-right text-right">
+                                <li><a href="">Refresh</a></li>
+                                <li><a href="">Settings</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6"  style="padding:0;background-color: rgba(0,0,0,0.2)">
+                            <div class="p-10" >
+                                <div id="donut-chart2" class="main-chart" style="height: 145px"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6"  style="padding:0;background-color: rgba(0,0,0,0.2)">
+                            <div class="block-area" id="tableHover3" style="padding:0">
+                                <h3 class="block-title" style="width: 100%;">战场动态</h3>
+                                <div class="roll" id="roll">
+                                    <ul>
+                                        <li>二营长战死</li>
+                                        <li>鬼子被包围</li>
+                                        <li>李向阳进攻</li>
+                                        <li>碉堡爆破中</li>
+                                        <li>伪军溃退</li>
+                                        <li>日寇分兵救援</li>
+                                        <li>李庄失守</li>
+                                        <li>俘虏鬼子小队长</li>
+                                        <li>敌负隅顽抗中</li>
+                                        <li>鬼子飞机轰炸</li>
+                                        <li>拉出意大利炮</li>
+                                        <li>塔楼已经轰平</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="col-md-12 col-sm-12 col-xs-12"  style="background-color: rgba(0,0,0,0.4);padding:0">
+                        <h3 class="block-title" style="width:100%">Table combine</h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6"  style="background-color: rgba(0,0,0,0.2)">
+                        <div class="p-10" >
+                            <div id="donut-chart2" class="main-chart" style="height: 100px"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6"  style="background-color: rgba(0,0,0,0.2)">
+                        <div class="block-area" id="tableHover3">
+                            <div class="table-responsive overflow">
+                                <table class="table table-bordered table-hover tile">
+                                    <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Jhon </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Malinda</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wayn</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="tile">
+                        <h2 class="tile-title">战场伤员动态</h2>
+                        <div class="tile-config dropdown">
+                            <a data-toggle="dropdown" href="" class="tooltips tile-menu" title="Options"></a>
+                            <ul class="dropdown-menu pull-right text-right">
+                                <li><a href="">Refresh</a></li>
+                                <li><a href="">Settings</a></li>
+                            </ul>
+                        </div>
+                        <div class="p-10">
+                            <div id="dynamic-chart" class="main-chart" style="height: 250px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="tile">
+                        <h2 class="tile-title">紧急与指挥方案</h2>
+                        <div class="tile-config dropdown">
+                            <a data-toggle="dropdown" href="" class="tooltips tile-menu" title="Options"></a>
+                            <ul class="dropdown-menu pull-right text-right">
+                                <li><a href="">Refresh</a></li>
+                                <li><a href="">Settings</a></li>
+                            </ul>
+                        </div>
+                        <div class="p-10">
+                            <div id="line-chart" class="main-chart" style="height: 250px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="GuildMap" style="display:none"/>
+</body>
+</html>

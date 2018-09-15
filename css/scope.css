@@ -6,6 +6,10 @@ body {
     background: url('/svg/backround.svg');
     background-repeat:no-repeat;
 }*/
+body {
+    background: #000000 url(../image/seablue.png) no-repeat fixed top;
+    background-size:100% 100%;
+}
 .logo-header{
     position:relative;
     margin-top:0px;
@@ -64,7 +68,6 @@ body {
     width:100%;
     overflow:visible;
     border:3px inset;
-    box-shadow: 10px 10px 5px #888888;
 }
 .baidu-maps img {
     max-width: inherit;

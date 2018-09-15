@@ -1,0 +1,38 @@
+{
+  "name":"李云龙",
+  "Security":"HN12345678",
+  "status": {
+    "die": false,
+    "serious": true,
+    "wounded": false,
+    "minor":false
+  },
+  "action": {
+    "urgent": false,
+    "radiation": true,
+    "medium": false,
+    "minor":false
+  },
+  "blood":{
+    "A":false,
+    "O":false,
+    "AB":true,
+    "B":false
+  },
+  "grade":10,
+  "woundtime":"2018-09-04 20:20:20",
+  "sendtime":"2018-09-04 20:20:20",
+  "arrivetime":"2018-09-04 20:20:20",
+  "wondlocation":"李庄",
+  "firstaidtime":"2018-09-04 20:20:20",
+  "rearlocation":"安邱",
+  "physicalexamination":{
+    "breathe":30,
+    "systolicpressure":"70",
+    "diastolicpressure":"140",
+    "mind":"clear"
+  }
+
+
+
+}
